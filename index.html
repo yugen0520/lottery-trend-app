@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>走势数据编辑器</title>
+    <meta name="theme-color" content="#f43b46" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="走势编辑" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="toolbar">
+        <div>
+          <label class="label" for="chartSelect">当前表</label>
+          <select id="chartSelect">
+            <option value="排列三-基本走势">排列三</option>
+            <option value="福彩3D-基本走势">福彩3D</option>
+          </select>
+        </div>
+        <div class="toolbar-actions">
+          <button id="drawButton" class="ghost active" type="button">画线开</button>
+          <button id="exportButton" class="ghost" type="button">导出</button>
+          <button id="importButton" class="ghost" type="button">导入</button>
+        </div>
+      </header>
+
+      <section class="install-tip" id="installTip">
+        <strong>可装到手机桌面</strong>
+        <span>浏览器菜单里选择“添加到主屏幕”。</span>
+      </section>
+
+      <section class="quick-add" aria-label="新增数据">
+        <div class="section-title">新增一期</div>
+        <div class="form-grid">
+          <label>期次<input id="issueInput" inputmode="numeric" placeholder="如 26164" /></label>
+          <label>奖号<input id="prizeInput" inputmode="numeric" maxlength="3" placeholder="如 346" /></label>
+          <label>和值<input id="sumInput" inputmode="numeric" placeholder="自动" /></label>
+          <label>百位<input id="hitInput" inputmode="numeric" maxlength="1" placeholder="0-9" /></label>
+        </div>
+        <div class="add-actions">
+          <button id="addButton" class="primary" type="button">加入新数据</button>
+          <button id="clearButton" class="secondary" type="button">清空本地修改</button>
+        </div>
+      </section>
+
+      <section class="chart-tools">
+        <button data-period="20" class="period active" type="button">20期</button>
+        <button data-period="30" class="period" type="button">30期</button>
+        <button data-period="50" class="period" type="button">50期</button>
+        <button id="deleteLastButton" class="period danger" type="button">删最后一期</button>
+      </section>
+
+      <section class="chart-card">
+        <div class="hint">点 0-9 数字可改变该行走势点；点期次/奖号/和值可直接编辑。表格可左右滑动。</div>
+        <div class="chart-scroll" id="chartScroll">
+          <div class="trend-table" id="trendTable">
+            <div id="gridLayer"></div>
+            <svg id="trendLines" class="trend-lines" aria-hidden="true"></svg>
+          </div>
+        </div>
+      </section>
+
+      <div class="toast" id="toast"></div>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
