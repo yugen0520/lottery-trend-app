@@ -98,19 +98,6 @@ function editableCell(className, text, x, y, w, h, field, row) {
   return div;
 }
 
-function digitValue(row, digit) {
-  const override = charts[currentName].overrides?.[row]?.[digit];
-  if (override !== undefined) return override;
-  if (digit <= 2) return (row + digit + 7) % 31 || 31;
-  if (digit === 3) return ((row + 21) % 33) + 1;
-  if (digit === 4) return ((row + 1) % 9) + 1;
-  if (digit === 5) return ((row + 5) % 8) + 1;
-  if (digit === 6) return ((row + 8) % 26) + 1;
-  if (digit === 7) return ((row + 12) % 18) + 1;
-  if (digit === 8) return ((row + 10) % 29) + 1;
-  return ((row + 1) % 5) + 1;
-}
-
 function render() {
   const chart = charts[currentName];
   const rows = Math.min(period, chart.issues.length);
@@ -145,9 +132,8 @@ function render() {
     for (let d = 0; d < 10; d += 1) {
       const x = dims.left1 + dims.left2 + dims.left3 + d * dims.digit;
       const hit = chart.hits[r] === d;
-      const digitCell = cell(`digit${alt}${hit ? " hit" : ""}`, hit ? d : digitValue(r, d), x, y, dims.digit, dims.row);
+      const digitCell = cell(`digit${alt}${hit ? " hit" : ""}`, hit ? d : "", x, y, dims.digit, dims.row);
       digitCell.addEventListener("click", () => moveHit(r, d));
-      digitCell.addEventListener("dblclick", () => editDigit(r, d));
       gridLayer.append(digitCell);
       if (hit) points.push({ x: x + dims.digit / 2, y: y + dims.row / 2 });
     }
@@ -171,16 +157,6 @@ function drawLines(points) {
 
 function moveHit(row, digit) {
   charts[currentName].hits[row] = digit;
-  persist();
-  render();
-}
-
-function editDigit(row, digit) {
-  const next = prompt("修改格子数字", digitValue(row, digit));
-  if (next === null) return;
-  charts[currentName].overrides ||= {};
-  charts[currentName].overrides[row] ||= {};
-  charts[currentName].overrides[row][digit] = next.trim();
   persist();
   render();
 }
