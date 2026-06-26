@@ -1,4 +1,4 @@
-const CACHE_NAME = "lottery-trend-editor-v2";
+const CACHE_NAME = "lottery-trend-editor-v3";
 const ASSETS = [
   "./",
   "./index.html",

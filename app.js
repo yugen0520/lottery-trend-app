@@ -35,10 +35,6 @@ const importButton = document.getElementById("importButton");
 const addButton = document.getElementById("addButton");
 const clearButton = document.getElementById("clearButton");
 const deleteLastButton = document.getElementById("deleteLastButton");
-const issueInput = document.getElementById("issueInput");
-const prizeInput = document.getElementById("prizeInput");
-const sumInput = document.getElementById("sumInput");
-const hitInput = document.getElementById("hitInput");
 const toast = document.getElementById("toast");
 const installTip = document.getElementById("installTip");
 
@@ -90,6 +86,7 @@ function editableCell(className, text, x, y, w, h, field, row) {
     if (field === "prizes") {
       chart.prizes[row] = value;
       chart.sums[row] = sumPrize(value);
+      chart.hits[row] = firstDigit(value);
     }
     if (field === "sums") chart.sums[row] = Number(value) || value;
     persist();
@@ -165,26 +162,23 @@ function sumPrize(value) {
   return String(value).split("").reduce((sum, ch) => sum + (Number(ch) || 0), 0);
 }
 
+function firstDigit(value) {
+  const match = String(value).match(/\d/);
+  return match ? Number(match[0]) : 0;
+}
+
 function addRow() {
-  const issue = issueInput.value.trim();
-  const prize = prizeInput.value.trim();
-  const hit = hitInput.value.trim() === "" ? prize[0] : hitInput.value.trim();
-  if (!issue || !/^\d{3}$/.test(prize) || !/^\d$/.test(hit)) {
-    showToast("请填期次、3位奖号、0-9百位");
-    return;
-  }
   const chart = charts[currentName];
-  chart.issues.push(issue);
-  chart.prizes.push(prize);
-  chart.sums.push(sumInput.value.trim() || sumPrize(prize));
-  chart.hits.push(Number(hit));
+  chart.issues.push("");
+  chart.prizes.push("");
+  chart.sums.push("");
+  chart.hits.push(0);
+  chart.green.push(chart.issues.length - 1);
+  period = Math.max(period, Math.min(50, chart.issues.length));
+  document.querySelectorAll(".period").forEach((item) => item.classList.toggle("active", Number(item.dataset.period) === period));
   persist();
-  issueInput.value = "";
-  prizeInput.value = "";
-  sumInput.value = "";
-  hitInput.value = "";
   render();
-  showToast("已加入新数据");
+  showToast("已新增空白行，直接在表格里填");
 }
 
 chartSelect.addEventListener("change", () => {
@@ -210,11 +204,6 @@ drawButton.addEventListener("click", () => {
 });
 
 addButton.addEventListener("click", addRow);
-
-prizeInput.addEventListener("input", () => {
-  if (prizeInput.value.length === 3 && !sumInput.value) sumInput.value = sumPrize(prizeInput.value);
-  if (prizeInput.value.length && !hitInput.value) hitInput.value = prizeInput.value[0];
-});
 
 deleteLastButton.addEventListener("click", () => {
   const chart = charts[currentName];

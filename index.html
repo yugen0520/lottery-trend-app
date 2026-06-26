@@ -33,29 +33,17 @@
         <span>浏览器菜单里选择“添加到主屏幕”。</span>
       </section>
 
-      <section class="quick-add" aria-label="新增数据">
-        <div class="section-title">新增一期</div>
-        <div class="form-grid">
-          <label>期次<input id="issueInput" inputmode="numeric" placeholder="如 26164" /></label>
-          <label>奖号<input id="prizeInput" inputmode="numeric" maxlength="3" placeholder="如 346" /></label>
-          <label>和值<input id="sumInput" inputmode="numeric" placeholder="自动" /></label>
-          <label>百位<input id="hitInput" inputmode="numeric" maxlength="1" placeholder="0-9" /></label>
-        </div>
-        <div class="add-actions">
-          <button id="addButton" class="primary" type="button">加入新数据</button>
-          <button id="clearButton" class="secondary" type="button">清空本地修改</button>
-        </div>
-      </section>
-
       <section class="chart-tools">
+        <button id="addButton" class="primary" type="button">新增空白行</button>
         <button data-period="20" class="period active" type="button">20期</button>
         <button data-period="30" class="period" type="button">30期</button>
         <button data-period="50" class="period" type="button">50期</button>
         <button id="deleteLastButton" class="period danger" type="button">删最后一期</button>
+        <button id="clearButton" class="period danger" type="button">恢复初始</button>
       </section>
 
       <section class="chart-card">
-        <div class="hint">空白格可直接点选走势位置；点期次/奖号/和值可编辑。表格可左右滑动。</div>
+        <div class="hint">像 Excel 一样用：点“新增空白行”，在表格最后一行填期次和奖号，红点和和值会自动出来。</div>
         <div class="chart-scroll" id="chartScroll">
           <div class="trend-table" id="trendTable">
             <div id="gridLayer"></div>
